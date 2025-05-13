@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./knowledge:/app/knowledge
+      - ./logs:/app/logs
+    environment:
+      - FLASK_DEBUG=false
+      - MODEL_NAME={{ model_name }}
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - KNOWLEDGE_BASE_PATH=/app/knowledge/documents
+      - LOG_INTERACTIONS=true
+      - LOG_DIR=/app/logs
+    depends_on:
+      - ollama
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    command: >
+      sh -c "ollama serve &
+             sleep 10 &&
+             ollama pull {{ model_name }} &&
+             wait"
+    restart: unless-stopped
+    # Optional: Enable GPU if available
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+volumes:
+  ollama_data:
+
+networks:
+  default:
+    driver: bridge

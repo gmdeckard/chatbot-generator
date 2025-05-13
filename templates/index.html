@@ -1,0 +1,87 @@
+<!-- Template for index.html with theme and font variable support -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ chatbot_name }} - Powered by {{ model_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Add Google Fonts if needed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Quicksand:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landing-container">
+        <div class="landing-content">
+            <h1>{{ chatbot_name }}</h1>
+            <h2>Powered by {{ model_name }}</h2>
+            
+            <div class="feature-list">
+                <div class="feature">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-text">
+                        <h3>AI Chat Interface</h3>
+                        <p>Chat with a lightweight LLM about {{ chatbot_description }}</p>
+                    </div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">📄</div>
+                    <div class="feature-text">
+                        <h3>Document Analysis</h3>
+                        <p>Upload documents or code snippets for instant analysis</p>
+                    </div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">🚀</div>
+                    <div class="feature-text">
+                        <h3>Specialized Knowledge</h3>
+                        <p>Optimized for answering questions about {{ chatbot_description }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cta-buttons">
+                <a href="{{ url_for('chat_page') }}" class="primary-button">Start Chatting</a>
+                <a href="https://github.com/{{ github_username }}/{{ repository_name }}" target="_blank" class="secondary-button">View on GitHub</a>
+            </div>
+            
+            <div class="customization-tip">
+                <p>💡 <strong>Pro Tip:</strong> You can customize this chatbot's behavior by editing the system prompt and LLM parameters in <code>src/config/llm_config.json</code></p>
+            </div>
+            
+            <div class="system-info">
+                <p class="info-text">Model: {{ model_name }}</p>
+                <p class="info-text">Knowledge Base: <span id="kb-count">Loading...</span> documents</p>
+                <p class="info-text">System Status: <span id="system-status">Checking...</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check system health on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/health')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('kb-count').textContent = data.knowledge_base_size;
+                    document.getElementById('system-status').textContent = 
+                        data.app_status === 'healthy' && data.llm_status === 'healthy' 
+                            ? 'Ready' : 'Unavailable';
+                    
+                    if (data.app_status !== 'healthy' || data.llm_status !== 'healthy') {
+                        document.getElementById('system-status').classList.add('status-error');
+                    } else {
+                        document.getElementById('system-status').classList.add('status-ok');
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('system-status').textContent = 'Error';
+                    document.getElementById('system-status').classList.add('status-error');
+                });
+        });
+    </script>
+</body>
+</html>

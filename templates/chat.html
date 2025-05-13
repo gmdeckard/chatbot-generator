@@ -1,0 +1,56 @@
+<!-- Template for chat.html with theme and font variable support -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>{{ chatbot_name }} - Chat</title>
+    <!-- Add Google Fonts if needed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Quicksand:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="chat-container">
+        <header>
+            <h1>{{ chatbot_name }}</h1>
+            <div class="header-buttons">
+                <button id="new-chat-btn" class="new-chat-button">New Chat</button>
+                <button id="upload-btn" class="upload-button">Upload Document</button>
+            </div>
+        </header>
+        
+        <div id="chat-messages" class="chat-messages">
+            <div class="message bot-message">
+                <div class="message-content">
+                    <p>Hello! I'm {{ chatbot_name }}, powered by {{ model_name }}. I'm here to help with {{ chatbot_description }}. Ask me anything or upload a document for analysis.</p>
+                    <p class="bot-info"><small>💡 I've been configured with a custom personality and response style</small></p>
+                </div>
+            </div>
+        </div>
+        
+        <form id="chat-form" class="chat-form">
+            <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required>
+            <button type="submit" id="send-btn">Send</button>
+        </form>
+        
+        <!-- File upload modal -->
+        <div id="upload-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Upload Document</h2>
+                <form id="upload-form" enctype="multipart/form-data">
+                    <div class="file-input-container">
+                        <input type="file" id="document-file" name="file">
+                        <label for="document-file">Choose a file</label>
+                    </div>
+                    <button type="submit" class="upload-submit">Analyze Document</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+# LLM Parameters Configuration
+
+This file contains the parameters that control how the language model generates responses.
+You can modify these values to adjust the chatbot's behavior.
+
+```json
+{
+  "temperature": 0.7,
+  "top_k": 40,
+  "top_p": 0.9,
+  "max_tokens": 1024,
+  "presence_penalty": 0.0,
+  "frequency_penalty": 0.0
+}
+```
+
+## Parameter Explanation
+
+- **temperature**: Controls randomness/creativity (0.0-1.0, higher = more creative)
+- **top_k**: Limits token selection to top k most likely tokens
+- **top_p**: Uses nucleus sampling for controlled randomness (0.0-1.0)
+- **max_tokens**: Maximum length of generated responses
+- **presence_penalty**: Reduces repetition of tokens already present (-2.0 to 2.0)
+- **frequency_penalty**: Reduces repetition based on frequency (-2.0 to 2.0)
+
+## Recommended Settings for Different Use Cases
+
+### Creative Assistant
+```json
+{
+  "temperature": 0.8,
+  "top_p": 0.9,
+  "max_tokens": 2048,
+  "frequency_penalty": 0.5
+}
+```
+
+### Technical Documentation
+```json
+{
+  "temperature": 0.3,
+  "top_p": 0.85,
+  "max_tokens": 1024,
+  "frequency_penalty": 0.2
+}
+```
+
+### Customer Support
+```json
+{
+  "temperature": 0.5,
+  "top_p": 0.92,
+  "max_tokens": 1024,
+  "presence_penalty": 0.1,
+  "frequency_penalty": 0.1
+}
+```
+  "top_p": 0.92,
+  "max_tokens": 1024,
+  "presence_penalty": 0.1,
+  "frequency_penalty": 0.1
+}
+```
